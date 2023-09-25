@@ -4,17 +4,89 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
-    crossorigin="anonymous">
-
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-    <title>Weather Dashbord</title>
-    </head>
-    
-    <body>
+    <link
+      rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap"
+      rel="stylesheet"/>
 
+    <title>Weather Dashbord</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    </head>
+
+    <body>
+            <div class="jumbotron-fluid mt-1 text-center p-1" style="background-image: linear-gradient(to right, blue, rgb(1, 1, 65)); color: cyan;">
+                <div class="container">
+                    <h1 class="display-4 ">Weather Dashboard</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3, md-2, bg-light">
+                    <h3 class="p-2">Search for a City</h3>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" id="city-name" aria-label="search-city" aria-describedby="search-button">
+                        <div class="input-group-append">
+                            <button id ="new-city" class ="search-city-button" type="button">search<i class="fa fa-search"></i></button>
+                            </div>
+                    </div>
+                    <div class="card" style="width: 15rem;">
+                        <ul id="city-list" class="list-group list-group-flush">
+                            </ul>
+                        </div>
+                        <div class="col-8 m-2">
+                            <div class="row-12">
+                                <div class="card">
+                                  <div id="today-weather" class="card-body">
+
+                                     <!-- <h3>City:</h3>
+                                        <p></p>
+                                        <p></p>
+                                        <p></p>
+                                        <p></p> -->
+                                     </div>
+                </div>
+            </div>
+            <!-- Beginning of row 2 in col 2 -->
+        <br>
+        <div class="row-12">
+          <h3>5-Day Forecast:</h3>
+        </div>
+        <!-- Beginning of row 3 in col 2 -->
+        <br>
+        <div id ="boxes" class="row">
+          <!-- Blue box 1
+         <div id="box2" class="col-2 m-2 bg-primary">
+           <h4></h4> -->
+           <!-- <img>
+           <p></p>
+           <p></p> -->
+         <!-- </div> -->
+         <!-- Blue box 2 -->
+         <!-- <div class="col-2 m-2 bg-primary"> -->
+          
+        <!-- </div> -->
+        <!-- Blue box 3-->
+        <!-- <div class="col-2 m-2 bg-primary">
+          <h4></h4> -->
+          
+        <!-- </div> -->
+        <!-- Blue box 4 -->
+        <!-- <div class="col-2 m-2 bg-primary">
+         <h4></h4> -->
+         
+       <!-- </div> -->
+       <!-- Blue box 5 -->
+       <!-- <div class="col-2 m-2 bg-primary"> -->
+        
+      <!-- </div> -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+      <script type="module" src="https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule="" src="https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js"></script>
+      <script src="./script.js"></script>
     </body>
 </html>
