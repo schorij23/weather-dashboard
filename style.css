@@ -1,0 +1,19 @@
+*{
+    box-sizing: border-box;
+    
+}
+
+body {
+    
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif
+    
+}
+h4{
+    font-weight: bold;
+}
+
+span{
+    font-size: 1em;
+}
+

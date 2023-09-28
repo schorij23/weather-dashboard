@@ -1,39 +1,64 @@
-//Todo 
+//Todo \
+//let comment everythinng 
 
-//  Search the city to make sure it exists
-//  Setup API Key
-var apiKey="876fe47417eaaeff0f787d1ddd261473";
-var searchbtn = document.getElementById("new-city")
-searchbtn.addEventListener("click" , handleSearch); 
+// Setup API Key (this is my apiKey, from my email)
+var apiKey="876fe47417eaaeff0f787d1ddd261473"; //my api key (checked on 9/26/2023)
+//assigns the html element/variable searchbtn to the id "search-button"
+var searchbtn = document.getElementById("search-button")
+//assigns a click event listner to html searchbtn element
+searchbtn.addEventListener("click" , handleSearch); // dont forget!! no handleSearch yet??
+//creates a placeholder function handleWeather (to handle the fetched weather data)
+
 function handleWeather () {
-var city = document.getElementById("city-name").value
+//assigns the value id="new-city" to the variable city
+var city = document.getElementById("new-city").value
+//this function does not exist yet, but what is does is fetch the current weather data to a specifed city and date
 fetchWeather (city)
 }
 
+//Now this function does exist
 function fetchWeather (city) {
+//api key is my api key but the ai (bard, chatgpt4,xpert learning assistant) is confused (doesnt know my apikey?)
     var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&q=${city}&units=imperial`;
+//used to find and update the data on the weather dash board 
     fetch(weatherUrl)
     .then(function (response) {
       return response.json();
     })
+//used to fetch and update the weather data on the dashboard
     .then(function (data){
         console.log(data);
         currentWeather(data);
     })
 }
-
+//function used to update the weather dashboard with the current weather conditions for any city
 function currentWeather (data) {
-    var todayWeather = document.getElementById ("today-weather");
-    var cityName = document.createElement("h3");
+    var todayWeather = document.getElementById ("current-weather");
+    var cityName = document.createElement("h4");
     cityName.textContent=data.name
-    var date=document.createElement("h3");
+//update the weather dashboard with the city name, temperature, weather icon, and current date in a format that is appropriate for the user's locale
+    var date=document.createElement("h4");
     date.textContent=data.dt;
+//update the weather dashboard with the weather icon using the icon element
     var icon= document.createElement("img");
     icon.src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+//update the weather dashboard with the temperature using the temp element
     var temp = document.createElement("p");
     temp.textContent = data.main.temp
+//update the weather dashboard with the city name, date, weather icon, and temperature for the current day.
     todayWeather.append (cityName,date,icon,temp)
 }
+
+//todo still
+// current city conditions does not show up
+// icon link doesnt work
+// no future conditions yet
+// 5 day forcast only has labels no input
+// no search history yet in for h4 pt1 class
+
+//current weather done
+//fetch find weather done
+
 
 
 //  Display the curent and future weather to the user after grabing the city form the input text box
