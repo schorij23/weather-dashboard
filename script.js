@@ -43,10 +43,19 @@ function currentWeather (data) {
     icon.src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
 //update the weather dashboard with the temperature using the temp element
     var temp = document.createElement("p");
-    temp.textContent = data.main.temp
+    temp.textContent = "Temp: " + data.main.temp  + " \u00B0F";
+//convert wind from meter per second to miles per hour
+    const windSpeedMetPS = data.wind.speed;
+    const windSpeedMPH = windSpeedMetPS * 2.23694;
+//create p element and display in "current weather"
+    var windSpeed = document.createElement("p");
+    windSpeed.textContent = "Wind Speed: " + windSpeedMPH.toFixed(2) + " mph";
+
+    var humid = document.createElement("p");
+    humid.textContent = "Humidity " +data.main.humidity + "\%";
 //update the weather dashboard with the city name, date, weather icon, and temperature for the current day.
     todayWeather.textContent="";
-    todayWeather.append (cityName,date,icon,temp)
+    todayWeather.append (cityName,date,icon,temp,windSpeed,humid)
     console.log(data.coord);
     futureWeather(data.coord.lat, data.coord.lon);
 }
