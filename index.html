@@ -24,29 +24,30 @@
     </head>
 
     <body>
-      <section class="hero">
-          <div class="jumbotron-fluid mt-1 text-white text-center p-1" style="background-image: linear-gradient(to right, blue, rgb(1, 1, 65)); color: cyan;">
-            <div class="container">
-              <h1 class="title">Weather Dashboard</h1>
-            </div>
-          </div>
-        </section>
-  <div class="container">
+        <div class="jumbotron-fluid mt-1 text-white text-center p-1" style="background-image: linear-gradient(to right, blue, rgb(1, 1, 65)); color: white;">
+            <h1 class="title">Weather Dashboard</h1>
+        </div>
+            
+    <div class="container">
       <div class="row">
-          <div class="col-sm-4 bg-light">
+          <div class="col-md-4 bg-light">
               <h4 class="pt1">Search for a City:</h4>
-              <div class="input-group mb-3">
-                  <input type="text" class="form-control"id="new-city" aria-label="City Search" aria-describedby="search-button">
+              <div class="input-group mb-2">
+                  <input type="text" class="form-control" id="new-city" aria-label="new-city-search" aria-describedby="search-button">
                   <div class="input-group-append">
-                      <button class="btn bg-primary text-light" id="search-button">Search<i class="fa fa-search"></i></button>
+                      <button id="search-button"class="btn bg-primary text-light" type="button">Search</button>
                   </div>
               </div>
-            
+              <div class="card" style="width: 15rem;">
+                <ul id="city-list" class="list-group list-group-flush">
+                  <!-- <li class="list-group-item"></li> -->
+                </ul>
+              </div>
           </div>   
           <div class="col-sm-8">
-              <div class="row ml-2 border border-dark rounded">
-                  <div class="col-sm-12" id="current-weather">
-                      <h3 class="city-name mb-1 mt-2 bolder" id="current-city"></h3>
+              <div class="row ml-2 border border-dark">
+                  <div id="current-weather"  class="col-sm-12">
+                      <h3 class="city-name mb-1 mt-2" id="current-city"></h3>
                       <p>Temp:<span class="current" id="temperature"></span></p>
                       <p>Wind:<span class="current" id="wind-speed"></span></p>
                       <p>Humidity:<span class="current" id="humidity"></span></p> 
