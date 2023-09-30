@@ -1,12 +1,39 @@
 // Setup my API Key
 var apiKey="876fe47417eaaeff0f787d1ddd261473";
 var city;
-//assigns the html element/variable searchbtn to the id "search-button"
+//assigns variable searchbtn to the id "search-button"
 var searchBtn = document.getElementById("search-button")
+//event listener for clicking the search button
 searchBtn.addEventListener("click" , fetchWeather);
 
+//Array for storing searches
+var searchHistory = [];
+//variable for city using id "new-city"
+var newCity = document.getElementById("new-city");
+//variable for searchbutton using id "search-button"
+var searchBtn = document.getElementById("search-button");
+//variable for search history using id "search-history"
+var searchHistoryList = document.getElementById("search-history");
 
-//Now this function does exist
+
+//Function that adds search history
+function addToSearchHistory(city) {
+// Check if the city is not already in the history to avoid duplicates
+    if (!searchHistory.includes(city)) {
+        searchHistory.push(city);
+//Add list item for history
+var listItem = document.createElement("li");
+    listItem.textContent = city;
+//event listener fo clicking the search button
+    listItem.addEventListener("click", function () {
+        newCityInput.value = city;
+    });
+// Append the item to the searched list
+searchHistoryList.appendChild(listItem);
+}
+}
+
+//Function the fetch weather to 
 function fetchWeather () {
 //Gets the value the imput element id new city
 var city = document.getElementById("new-city").value    
@@ -21,112 +48,90 @@ var weatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&
     .then(function (data){
         console.log(data);
         currentWeather(data);
-    })
+//Call the displayForecast function with the coordinates
+        displayForecast(data.coord.lat, data.coord.lon);
+    });
 }
 
 //function used to update the weather dashboard with the current weather conditions for any city
 function currentWeather (data) {
     console.log(data)
-    var todayWeather = document.getElementById ("current-weather");
-    var cityName = document.createElement("h3");
+var todayWeather = document.getElementById ("current-weather");
+var cityName = document.createElement("h3");
     cityName.textContent=data.name
 //update the weather dashboard with the city name, temperature, weather icon, and current date in a format that is appropriate for the user's locale
-    var date=document.createElement("h3");
-    const timestamp = data.dt * 1000;
+var date=document.createElement("h3");
+const timestamp = data.dt * 1000;
     console.log(timestamp); // prints the corresponding JavaScript timestamp
-    var date = new Date(timestamp);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-    date.textContent=formattedDate;
+var date = new Date(timestamp);
+const options = { year: 'numeric', month: 'long', day: 'numeric' };
+const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+    date.textContent= formattedDate;
 //update the weather dashboard with the weather icon using the icon element
-    var icon= document.createElement("img");
+var icon= document.createElement("img");
     icon.src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
 //update the weather dashboard with the temperature using the temp element
-    var temp = document.createElement("p");
+var temp = document.createElement("p");
     temp.textContent = "Temp: " + data.main.temp  + " \u00B0F";
 //convert wind from meter per second to miles per hour
-    const windSpeedMetPS = data.wind.speed;
-    const windSpeedMPH = windSpeedMetPS * 2.23694;
-//create p element and display in "current weather"
-    var windSpeed = document.createElement("p");
+const windSpeedMetPS = data.wind.speed;
+const windSpeedMPH = windSpeedMetPS * 2.23694;
+//create element wind speedand display in "current weather"
+var windSpeed = document.createElement("p");
     windSpeed.textContent = "Wind Speed: " + windSpeedMPH.toFixed(2) + " mph";
-
-    var humid = document.createElement("p");
+//create element humid and display in "current weather"
+var humid = document.createElement("p");
     humid.textContent = "Humidity " +data.main.humidity + "\%";
-//update the weather dashboard with the city name, date, weather icon, and temperature for the current day.
+//update dashboard with the city name, date, icon, temp , wind for the current day.
     todayWeather.textContent="";
     todayWeather.append (cityName,date,icon,temp,windSpeed,humid)
     console.log(data.coord);
-    futureWeather(data.coord.lat, data.coord.lon);
+    fetchFiveDayForecast(data.coord.lat, data.coord.lon);
 }
+//Function to fetch the 5-day forecast based on latitude and longitude
+function fetchFiveDayForecast(lat, lon) {
+//api ket to extract 5 day forcast
+var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&cnt=5&appid=" + apiKey + "&units=imperial";
+    fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+//Extract the data from the API response based on location and time period
+var forecastData = data.list;
+//Get a reference to the forecast container in your HTML
+var forecastContainer = document.getElementById('forecast-container');
+//Clear previous forecast
+    forecastContainer.textContent = '';
+//For each loop through the forecast and create cards
+    forecastData.forEach((forecast) => {
+//Extract date and time
+var dateTime = forecast.dt_txt;
+//Extract temperature
+var temperature = forecast.main.temp;
+//Extract windspeed
+var windSp = forecast.wind.speed;
+//Extract humidity
+var humidity = forecast.main.humidity;
 
-function futureWeather (lat, lon) {
- var cityName = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
- fetch (cityName)
- .then(function (response) {
-    return response.json();
- })
+//Create a forecast card when the search button is clicked
+var forecastCard = document.createElement('div');
+    forecastCard.classList.add('col-md-2', 'mb-3');
+    forecastCard.innerHTML = 
+        `<div class="card">
+            <div class="card-body">
+                <h5 class="card-title">${dateTime}</h5>
+                <p class="card-text">Temp ${temperature}°F</p>
+                <p class="card-text">Wind: ${windSp}</p>
+                <p class="cart-text">Humidity: ${humidity}%</p>
+            </div>
+        </div>`;
+
+//Append the card to the container
+            forecastContainer.appendChild(forecastCard);
+        });
+    })
 
 }
-//todo still
-// current city conditions does not show up
-// icon link doesnt work
-// no future conditions yet
-// 5 day forcast only has labels no input
-// no search history yet in for h4 pt1 class
-
-//current weather done
-//fetch find weather done
-
-
-
-//  Display the curent and future weather to the user after grabing the city form the input text box
-//  Build the URL to get data from server side
-//  Display the 5 days forecast for the current city
-//  Dynamically add the passed city on the search history
-//  Display the past search again when the list group item is clicked in search history
-//  Set up a function to render the data
-//  Clear the search history from the page
-//  Dont forget click event handlers
-
-
-// Bard AI example answer to the hint question
-
-// Using the 5 Day Weather Forecast API, you'll notice that you will need to pass in coordinates 
-//instead of just a city name. 
-//Using the OpenWeatherMap APIs, how could we retrieve geographical coordinates given a city name?
-
-
-// To retrieve geographical coordinates given a city name using the OpenWeatherMap APIs, you can use the Geocoding API. 
-//The Geocoding API allows you to convert a location name (city name or area name) into geographical 
-//coordinates (lat, lon).
-// To use the Geocoding API, you will need to make a GET request to the following endpoint:
-// https://api.openweathermap.org/geo/1.0/direct?q={city name}&appid={your API key}
-// Replace {city name} with the name of the city that you want to get the geographical coordinates for. 
-// Replace {your API key} with your OpenWeatherMap API key.
-
-// The response from the Geocoding API will be a JSON object that contains the geographical coordinates 
-//of the city that you specified. The lat and lon properties in the JSON object 
-//contain the latitude and longitude coordinates of the city, respectively.
-
-// Here is an example of a GET request to the Geocoding API to get the geographical coordinates of the city "London":
-// https://api.openweathermap.org/geo/1.0/direct?q=London&appid={your API key}
-// The response from the Geocoding API will be a JSON object like the following:
-// JSON
-// {
-//   "count": 1,
-//   "list": [
-//     {
-//       "id": 2643743,
-//       "name": "London",
-//       "country": "GB",
-//       "lat": 51.5074,
-//       "lon": -0.1278
-//     }
-//   ]
-// }
-// The lat and lon properties in the JSON object contain the latitude and longitude coordinates of London, respectively.
-// Once you have retrieved the geographical coordinates of the city that you want to get the 5-day weather forecast for, you can pass the coordinates to the 5 Day Weather Forecast API.
-// Here is an example of a GET request to the 5 Day Weather Forecast API to get the forecast for the city with the latitude and longitude coordinates 51.5074 and -0.1278, respectively:
-// https://api.openweathermap.org/data/2.5/forecast/daily?lat=51.5074&lon=-0.1278&appid={your API key}
-// The response from the 5 Day Weather Forecast API will be a JSON object that contains the weather forecast for the specified coordinates.
+//Function to display the 5-day forecast
+function displayForecast(lat, lon) {
+    fetchFiveDayForecast(lat, lon);
+}
