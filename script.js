@@ -2,7 +2,7 @@
 var apiKey="876fe47417eaaeff0f787d1ddd261473";
 var city;
 //assigns variable searchbtn to the id "search-button"
-var searchBtn = document.getElementById("search-button")
+var searchBtn = document.getElementById("search-button");
 //event listener for fetchWeather function
 searchBtn.addEventListener("click" , fetchWeather);
 // Define an array to store the search history
@@ -29,10 +29,12 @@ function addToSearchHistory(city) {
 //Prevents duplicate city name searches
     if (!searchHistory.includes(city)) {
         searchHistory.push(city);
-//Add list item for history
+//Add button for history
 var searchHistoryBtn = document.createElement("button")
 // var listItem = document.createElement("li");
     searchHistoryBtn.textContent = city;
+//Add class to the button
+searchHistoryBtn.classList.add("search-history-btn");    
 //event listener fo clicking the search button
     searchHistoryBtn.addEventListener("click", function (e) {
         newCityInput.value = city;

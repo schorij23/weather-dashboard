@@ -13,18 +13,20 @@
     line-height: 1;
     font-family: sans-serif;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-size: 100%;
-  }
-  
-  input, select, option, optgroup, textarea, button,
-  pre, code {
-    font-size: 100%;
-    font-family: inherit;
-  }
-  
-  ol, ul {
-    list-style: none;
+
+.search-history-btn {
+  background-color: rgb(33, 33, 251);
+  color: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#search-history {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
