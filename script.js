@@ -3,35 +3,56 @@ var apiKey="876fe47417eaaeff0f787d1ddd261473";
 var city;
 //assigns variable searchbtn to the id "search-button"
 var searchBtn = document.getElementById("search-button")
-//event listener for clicking the search button
+//event listener for fetchWeather function
 searchBtn.addEventListener("click" , fetchWeather);
-
-//Array for storing searches
+// Define an array to store the search history
 var searchHistory = [];
-//variable for city using id "new-city"
-var newCity = document.getElementById("new-city");
-//variable for searchbutton using id "search-button"
-var searchBtn = document.getElementById("search-button");
-//variable for search history using id "search-history"
+
+//Variable for input using id "new-city"
+var newCityInput = document.getElementById("new-city");
+//Variable for button using id "search-button"
+var searchButton = document.getElementById("search-button");
+//Variable for searchhistory list using id "search-history"
 var searchHistoryList = document.getElementById("search-history");
 
+// //Array for storing searches
+// var searchHistory = [];
+// //variable for city using id "new-city"
+// var newCity = document.getElementById("new-city");
+// //variable for searchbutton using id "search-button"
+// var searchBtn = document.getElementById("search-button");
+// //variable for search history using id "search-history"
+// var searchHistoryList = document.getElementById("search-history");
 
 //Function that adds search history
 function addToSearchHistory(city) {
-// Check if the city is not already in the history to avoid duplicates
+//Prevents duplicate city name searches
     if (!searchHistory.includes(city)) {
         searchHistory.push(city);
 //Add list item for history
-var listItem = document.createElement("li");
-    listItem.textContent = city;
+var searchHistoryBtn = document.createElement("button")
+// var listItem = document.createElement("li");
+    searchHistoryBtn.textContent = city;
 //event listener fo clicking the search button
-    listItem.addEventListener("click", function () {
+    searchHistoryBtn.addEventListener("click", function (e) {
         newCityInput.value = city;
+        console.log(e.target.textContent);
     });
-// Append the item to the searched list
-searchHistoryList.appendChild(listItem);
+//Append list item to the end of the searched list
+searchHistoryList.appendChild(searchHistoryBtn);
 }
 }
+
+//Event listener for saving the search history
+searchButton.addEventListener("click", function () {
+var city = newCityInput.value;
+    if (city) {
+//Add city to the history
+        addToSearchHistory(city);
+//Call fetchWeather function
+        fetchWeather();
+    }
+});
 
 //Function the fetch weather to 
 function fetchWeather () {
@@ -75,36 +96,45 @@ var temp = document.createElement("p");
     temp.textContent = "Temp: " + data.main.temp  + " \u00B0F";
 //convert wind from meter per second to miles per hour
 const windSpeedMetPS = data.wind.speed;
-const windSpeedMPH = windSpeedMetPS * 2.23694;
+// const windSpeedMPH = windSpeedMetPS * 2.23694;
 //create element wind speedand display in "current weather"
 var windSpeed = document.createElement("p");
-    windSpeed.textContent = "Wind Speed: " + windSpeedMPH.toFixed(2) + " mph";
+    windSpeed.textContent = "Wind Speed: " + windSpeedMetPS + " mph";
 //create element humid and display in "current weather"
 var humid = document.createElement("p");
     humid.textContent = "Humidity " +data.main.humidity + "\%";
 //update dashboard with the city name, date, icon, temp , wind for the current day.
     todayWeather.textContent="";
+//Displays the current weather
     todayWeather.append (cityName,date,icon,temp,windSpeed,humid)
     console.log(data.coord);
+//call the fetch forecast based on coordinates
     fetchFiveDayForecast(data.coord.lat, data.coord.lon);
 }
 //Function to fetch the 5-day forecast based on latitude and longitude
 function fetchFiveDayForecast(lat, lon) {
 //api ket to extract 5 day forcast
-var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&cnt=5&appid=" + apiKey + "&units=imperial";
+var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial";
     fetch(apiUrl)
         .then((response) => response.json())
         .then((data) => {
 //Extract the data from the API response based on location and time period
 var forecastData = data.list;
+console.log(data);
 //Get a reference to the forecast container in your HTML
 var forecastContainer = document.getElementById('forecast-container');
 //Clear previous forecast
     forecastContainer.textContent = '';
 //For each loop through the forecast and create cards
-    forecastData.forEach((forecast) => {
+for (i=0; i < forecastData.length; i+=8) {
+let forecast = forecastData[i];
+
+    // forecastData.forEach((forecast) => {
 //Extract date and time
 var dateTime = forecast.dt_txt;
+//update the weather dashboard with the weather icon using the icon element
+
+var iconSrc = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`
 //Extract temperature
 var temperature = forecast.main.temp;
 //Extract windspeed
@@ -112,13 +142,17 @@ var windSp = forecast.wind.speed;
 //Extract humidity
 var humidity = forecast.main.humidity;
 
-//Create a forecast card when the search button is clicked
+//Add a div to the forecast card variable
 var forecastCard = document.createElement('div');
+
+//Adds css to the forcast card
     forecastCard.classList.add('col-md-2', 'mb-3');
+//Adds the id forecast card to the div
     forecastCard.innerHTML = 
         `<div class="card">
             <div class="card-body">
                 <h5 class="card-title">${dateTime}</h5>
+                <img src="${iconSrc}">
                 <p class="card-text">Temp ${temperature}°F</p>
                 <p class="card-text">Wind: ${windSp}</p>
                 <p class="cart-text">Humidity: ${humidity}%</p>
@@ -127,7 +161,7 @@ var forecastCard = document.createElement('div');
 
 //Append the card to the container
             forecastContainer.appendChild(forecastCard);
-        });
+        };
     })
 
 }
