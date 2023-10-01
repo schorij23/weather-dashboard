@@ -2,18 +2,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
+}
   html {
     height: 100%;
-  }
-  
+} 
   body {
     min-height: 100%;
     line-height: 1;
     font-family: sans-serif;
-  }
-
+}
 .search-history-btn {
   background-color: navy;
   color: white;
@@ -23,13 +20,11 @@
   align-items: center;
   width: 100%;
 }
-
 #search-history {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-
 .card-body {
     background-color: powderblue;
   color: white;
@@ -39,8 +34,6 @@
   align-items: center;
   width: 100%;
 }
-
-
 .col-sm-12 {
     background-color: navy;
     color: white;
