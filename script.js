@@ -127,7 +127,7 @@ console.log(data);
 var forecastContainer = document.getElementById('forecast-container');
 //Clear previous forecast
     forecastContainer.textContent = '';
-//For each loop through the forecast and create cards
+//For loop through the forecast and create cards
 for (i=0; i < forecastData.length; i+=8) {
 let forecast = forecastData[i];
 
@@ -139,11 +139,12 @@ var dateTime = forecast.dt_txt;
 var iconSrc = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`
 //Extract temperature
 var temperature = forecast.main.temp;
+var temperatureTrim = temperature.toFixed(0);
 //Extract windspeed
-var windSp = forecast.wind.speed;
+var windS = forecast.wind.speed;
+var windSTrim = windS.toFixed(1);
 //Extract humidity
 var humidity = forecast.main.humidity;
-
 //Add a div to the forecast card variable
 var forecastCard = document.createElement('div');
 
@@ -155,8 +156,8 @@ var forecastCard = document.createElement('div');
             <div class="card-body">
                 <h5 class="card-title">${dateTime}</h5>
                 <img src="${iconSrc}">
-                <p class="card-text">Temp ${temperature}°F</p>
-                <p class="card-text">Wind: ${windSp}</p>
+                <p class="card-text">Temp ${temperatureTrim}°F</p>
+                <p class="card-text">Wind-Speed: ${windSTrim} mph</p>
                 <p class="cart-text">Humidity: ${humidity}%</p>
             </div>
         </div>`;
