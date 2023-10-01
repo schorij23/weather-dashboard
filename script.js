@@ -15,7 +15,6 @@ var searchButton = document.getElementById("search-button");
 //Variable for searchhistory list using id "search-history"
 var searchHistoryList = document.getElementById("search-history");
 
-
 //Function that adds search history
 function addToSearchHistory(city) {
 //Prevents duplicate city name searches
