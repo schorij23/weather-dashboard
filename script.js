@@ -15,14 +15,6 @@ var searchButton = document.getElementById("search-button");
 //Variable for searchhistory list using id "search-history"
 var searchHistoryList = document.getElementById("search-history");
 
-// //Array for storing searches
-// var searchHistory = [];
-// //variable for city using id "new-city"
-// var newCity = document.getElementById("new-city");
-// //variable for searchbutton using id "search-button"
-// var searchBtn = document.getElementById("search-button");
-// //variable for search history using id "search-history"
-// var searchHistoryList = document.getElementById("search-history");
 
 //Function that adds search history
 function addToSearchHistory(city) {
