@@ -84,11 +84,11 @@ var cityName = document.createElement("h3");
     cityName.textContent=data.name
 //update the weather dashboard with the city name, temperature, weather icon, and current date in a format that is appropriate for the user's locale
 var date=document.createElement("h3");
-const timestamp = data.dt * 1000;
+var timestamp = data.dt * 1000;
     console.log(timestamp); // prints the corresponding JavaScript timestamp
 var date = new Date(timestamp);
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
-const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+var options = { year: 'numeric', month: 'long', day: 'numeric' };
+var formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
     date.textContent= formattedDate;
 //update the weather dashboard with the weather icon using the icon element
 var icon= document.createElement("img");
@@ -123,6 +123,7 @@ var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&l
 //Extract the data from the API response based on location and time period
 var forecastData = data.list;
 console.log(data);
+
 //Get a reference to the forecast container in your HTML
 var forecastContainer = document.getElementById('forecast-container');
 //Clear previous forecast
@@ -133,6 +134,7 @@ let forecast = forecastData[i];
 
     // forecastData.forEach((forecast) => {
 //Extract date and time
+
 var dateTime = forecast.dt_txt;
 //update the weather dashboard with the weather icon using the icon element
 
@@ -157,8 +159,8 @@ var forecastCard = document.createElement('div');
                 <h5 class="card-title">${dateTime}</h5>
                 <img src="${iconSrc}">
                 <p class="card-text">Temp ${temperatureTrim}°F</p>
-                <p class="card-text">Wind-Speed: ${windSTrim} mph</p>
-                <p class="cart-text">Humidity: ${humidity}%</p>
+                <p class="card-text">Wind-Speed ${windSTrim} mph</p>
+                <p class="cart-text">Humidity ${humidity}%</p>
             </div>
         </div>`;
 
