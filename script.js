@@ -3,12 +3,15 @@ var apiKey="876fe47417eaaeff0f787d1ddd261473";
 var city;
 //Get the search button element by its id search button
 var searchBtn = document.getElementById("search-button");
-//create click event on search button calls the function fetchweather
+//Create click event on search button calls the function fetchweather
 searchBtn.addEventListener("click" , fetchWeather);
-// variable for the array that stores search history
+
+//Variable for the array that stores search history
 var searchHistory = [];
+//Variable fot the array that store the search history data
+var searchHistoryData = [];
 //Get input for the id new city name then store it in the variable
-var newCityInput = document.getElementById("new-city");
+var newCityEl = document.getElementById("new-city");
 //Get id search button then store it in the variable
 var searchButton = document.getElementById("search-button");
 //Get id search history list and store in in the variable
@@ -16,158 +19,177 @@ var searchHistoryList = document.getElementById("search-history");
 
 // Add a click event listener to searchHistoryList
 searchHistoryList.addEventListener("click", function (e) {
-//Checks if the clicked object has the same class as search button
+
+    //Checks if the clicked object has the same class as search button
     if (e.target.classList.contains("search-history-btn")) {
-//Get the city name from the text content of the clicked element.
+//Get city name from text content of the clicked element
 var city = e.target.textContent;
-//Set value of new city input field to the city name
-        newCityInput.value = city;
-        // Find the corresponding latitude and longitude from your searchHistory array
-var cityData = searchHistoryData.find((item) => item.city === city);
-        if (cityData) {
-var lat = cityData.lat;
-var lon = cityData.lon;
-// Call fetchWeather function with the latitude and longitude
-            fetchWeather(lat, lon);
- // Call fetchFiveDayForecast function with the latitude and longitude
-            fetchFiveDayForecast(lat, lon);
+//Set new city input value to city name
+        newCityEl.value = city;
+//Search for city data in the searchHistoryData array if the city properties match
+var cityEl = searchHistoryData.find((search) => search.city === city);
+//Check if exists and extract lat and lon to cityEl
+        if (cityEl) {
+var lat = cityEl.lat;
+var lon = cityEl.lon;
+//FetchWeather function based on the lat and lon
+    fetchWeather(lat, lon);
+//FetchFiveDayForecast with the latitude and longitude
+    fetchFiveDay(lat, lon);
         }
     }
  });
 
-//Function that adds search history
-function addToSearchHistory(city,lat,lon) {
-//Prevents duplicate city name searches
+//Function that adds search history to the cities
+function addToSearch(city,lat,lon) {
+
+    //Prevents duplicate city names in history
     if (!searchHistory.includes(city)) {
+//Push the city to the searchHistory array        
         searchHistory.push(city);
-//Add button for history
+//Add button for search history
 var searchHistoryBtn = document.createElement("button")
-// var listItem = document.createElement("li");
-    searchHistoryBtn.textContent = city;
-//Add class to the button
+//Set the button textcontent to the city name
+searchHistoryBtn.textContent = city;
+//Add a class search-history-btn to the button
 searchHistoryBtn.classList.add("search-history-btn");    
-//event listener fo clicking the search button
-searchHistoryBtn.dataset.city = city; // Store city name as a data attribute
-searchHistoryBtn.dataset.lat = lat;   // Store latitude as a data attribute
-searchHistoryBtn.dataset.lon = lon;   // Store longitude as a data attribute
+//Variables to store city name latitude and longitude as a data attribute
+searchHistoryBtn.setAttribute("data-city", city);
+searchHistoryBtn.setAttribute("data-lat", lat); 
+searchHistoryBtn.setAttribute("data-lon", lon);  
 
-//Append list item to the end of the searched list
+//Adds list item to the end the array list
 searchHistoryList.appendChild(searchHistoryBtn);
+//Adds city lat and lon to the search history data array
 searchHistoryData.push({ city, lat, lon });
-}
+    }
 }
 
-//Event listener for saving the search history
+//Click Event listener for saving the search button history
 searchButton.addEventListener("click", function () {
-var city = newCityInput.value;
+
+    //Get the value of the new City Element input field    
+var city = newCityEl.value;
+//If a city is entered add to the functioons
     if (city) {
-//Add city to the history
-        addToSearchHistory(city);
-//Call fetchWeather function
+//Calls the addToSearch function that adds city to the search
+        addToSearch(city);
+//Call fetchWeather function to fetch weather for the city
         fetchWeather();
     }
 });
 
-// Array to store the search history data
-var searchHistoryData = [];
 
-//Function the fetch weather to 
+
+//Function the to fetch weather 
 function fetchWeather () {
-//Gets the value the imput element id new city
-var city = document.getElementById("new-city").value    
+
+//Variable to get city name from the input using id "new-city"
+var city = document.getElementById("new-city").value   
+//Use console log for debugging var city
 console.log(city);
-var weatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
-//used to find and update the data on the weather dash board 
-    fetch(weatherUrl)
+//Open weather map API URL with the city, apiKey, and imperial units
+var weatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial"; 
+//Fetch API to uses GET request to the weather API
+    fetch(weatherUrl)    
     .then(function (response) {
+//Parse to response to json format        
       return response.json();
     })
-//used to fetch and update the weather data on the dashboard
+
     .then(function (data){
+//Use console log for debugging weather data
         console.log(data);
+//Calls the currentWeather function to display current weather data on the dashboard
         currentWeather(data);
-//Call the displayForecast function with the coordinates
+//Calls the displayForecast function with the coordinates
         displayForecast(data.coord.lat, data.coord.lon);
     });
 }
 
-//function used to update the weather dashboard with the current weather conditions for any city
+//Function to update weather dashboard with the current weather data conditions
 function currentWeather (data) {
+    
     console.log(data)
+//Variable to get the element where you display the current weather    
 var todayWeather = document.getElementById ("current-weather");
+//Create h3 element for city name and set content
 var city = document.createElement("h3");
     city.textContent=data.name
-//update the weather dashboard with the city name, temperature, weather icon, and current date in a format that is appropriate for the user's locale
+//Convert the Unix timestamp to readable date
 var date=document.createElement("h3");
 var timestamp = data.dt * 1000;
-    console.log(timestamp); // prints the corresponding JavaScript timestamp
+//Prints the JavaScript timestamp
+    console.log(timestamp);
+//Format date to day month date year    
 var date = new Date(timestamp);
 var options = { year: 'numeric', month: 'long', day: 'numeric' };
 var formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
     date.textContent= formattedDate;
-//update the weather dashboard with the weather icon using the icon element
+//Create img element for the weather icon and set its api source
 var icon= document.createElement("img");
     icon.src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
-//update the weather dashboard with the temperature using the temp element
+//Create p element for temperature and set content
 var temp = document.createElement("p");
     temp.textContent = "Temp: " + data.main.temp  + " \u00B0F";
-//update the weather dashboard with the wind speed using the windconvert wind from meter per second to miles per hour
-const windSpeedMetPS = data.wind.speed;
-// const windSpeedMPH = windSpeedMetPS * 2.23694;
-//create element wind speedand display in "current weather"
+//Convert wind speed to mph (if it's in meters per second)
+var windSpeedMetPS = data.wind.speed;
+//Create p element for wind speed and set content
 var windSpeed = document.createElement("p");
     windSpeed.textContent = "Wind Speed: " + windSpeedMetPS + " mph";
-//create element humid and display in "current weather"
+//Create p element humididy and set content
 var humid = document.createElement("p");
     humid.textContent = "Humidity " +data.main.humidity + "\%";
-//update dashboard with the city name, date, icon, temp , wind for the current day.
+//Clear existing remaining text content from today weather
     todayWeather.textContent="";
-//Displays the current weather
+ //Append all elements in order to the todayWeather element
     todayWeather.append (city,date,icon,temp,windSpeed,humid)
     console.log(data.coord);
-//call the fetch forecast based on coordinates
-    fetchFiveDayForecast(data.coord.lat, data.coord.lon);
+//Call the fetchFiveDay function with lat and lon coordinates
+    fetchFiveDay(data.coord.lat, data.coord.lon);
 }
-//Function to fetch the 5-day forecast based on latitude and longitude
-function fetchFiveDayForecast(lat, lon) {
-//api ket to extract 5 day forcast
+//Function to fetch the 5-day forecast based on lat and lon
+function fetchFiveDay(lat, lon) {
+//API URL to fetch tfive-day forecast data
 var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial";
+//Use fetch API to make a GET request to the openweathermap API    
     fetch(apiUrl)
         .then((response) => response.json())
         .then((data) => {
-//Extract the data from the API response based on location and time period
+//Variable used to extract list of forecast data from API
 var forecastData = data.list;
 console.log(data);
 
-//Get a reference to the forecast container in your HTML
+//Get a reference to html forecastContainer used to display the forecast
 var forecastContainer = document.getElementById('forecast-container');
-//Clear previous forecast
+//Clear the previous content in the forecastContainer
     forecastContainer.textContent = '';
-//For loop through the forecast and create cards
+//For Loop through the forecast data (at every 8th element to get 24 hour forecast)
 for (i=0; i < forecastData.length; i+=8) {
 let forecast = forecastData[i];
 
-//Extract date and time
+//Get formated date and time
 var dateTime = forecast.dt_txt;
 const formattedDate = new Date(dateTime).toLocaleDateString('en-US', {weekday:'long', year: 'numeric', month: 'long', day: 'numeric' });
 
 console.log(formattedDate);
-//update the weather dashboard with the weather icon using the icon element
+
+//Get weather icon using the icon url
 var iconSrc = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`
-//Extract temperature
+//Get temperature and format
 var temperature = forecast.main.temp;
 var temperatureTrim = temperature.toFixed(0);
-//Extract windspeed
+//Get windspeed and format
 var windS = forecast.wind.speed;
 var windSTrim = windS.toFixed(1);
-//Extract humidity
+//Get the humidity
 var humidity = forecast.main.humidity;
-//Add a div to the forecast card variable
+//Add a div to the forecast card
 var forecastCard = document.createElement('div');
 
-//Adds css to the forcast card
+//Adds bootstrap css to the forcast card
     forecastCard.classList.add('col-md-2', 'mb-3');
-//Adds the id forecast card to the div
+//Set the inner HTML of the card with the formatted data
     forecastCard.innerHTML = 
         `<div class="card">
             <div class="card-body">
@@ -185,7 +207,8 @@ var forecastCard = document.createElement('div');
     })   
 }
 
-//Function to display the 5-day forecast
+//Function to fetch and display the 5-day forecast
 function displayForecast(lat, lon) {
-    fetchFiveDayForecast(lat, lon);
+//Call fetchFiveDay function with lat and lon coordinates
+    fetchFiveDay(lat, lon);
 }
