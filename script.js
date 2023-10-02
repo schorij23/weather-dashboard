@@ -1,23 +1,26 @@
-//Set up the API key and city variable for weather data retrieval
+//Set up the API key and city variable for to fetch weather data
 var apiKey="876fe47417eaaeff0f787d1ddd261473";
 var city;
-//Get the search button element by its ID
+//Get the search button element by its id search button
 var searchBtn = document.getElementById("search-button");
-//create click event on search button calls the fetchweather function
+//create click event on search button calls the function fetchweather
 searchBtn.addEventListener("click" , fetchWeather);
-// variable for the array to store the search history
+// variable for the array that stores search history
 var searchHistory = [];
-
-//Variable newCity input assigned "new-city"
+//Get input for the id new city name then store it in the variable
 var newCityInput = document.getElementById("new-city");
-//Variable for button using id "search-button"
+//Get id search button then store it in the variable
 var searchButton = document.getElementById("search-button");
-//Variable for searchhistory list using id "search-history"
+//Get id search history list and store in in the variable
 var searchHistoryList = document.getElementById("search-history");
 
+// Add a click event listener to searchHistoryList
 searchHistoryList.addEventListener("click", function (e) {
+//Checks if the clicked object has the same class as search button
     if (e.target.classList.contains("search-history-btn")) {
-var city = e.target.textContent; // Get the city name from the button's text content
+//Get the city name from the text content of the clicked element.
+var city = e.target.textContent;
+//Set value of new city input field to the city name
         newCityInput.value = city;
         // Find the corresponding latitude and longitude from your searchHistory array
 var cityData = searchHistoryData.find((item) => item.city === city);
