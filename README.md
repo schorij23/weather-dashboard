@@ -26,3 +26,4 @@ THEN I am again presented with current and future conditions for that city
 
 https://schorij23.github.io/weather-dashboard/
 
+![Screenshot 2023-10-02 at 15-53-54 Weather Dashbord](https://github.com/schorij23/weather-dashboard/assets/5600528/d139901f-b8ee-4313-ada0-e100294b0e98)
