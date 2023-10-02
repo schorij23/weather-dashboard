@@ -89,7 +89,7 @@ var city = document.getElementById("new-city").value
 //Use console log for debugging var city
 console.log(city);
 //Open weather map API URL with the city, apiKey, and imperial units
-var weatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial"; 
+var weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial"; 
 //Fetch API to uses GET request to the weather API
     fetch(weatherUrl)    
     .then(function (response) {
